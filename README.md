@@ -1,1 +1,1 @@
-# vk_deep_python_23_irinaguseva
+Репозиторий для домашних заданий на курсе "Углубленный Python" от VK Education в сезоне Autumn 2023.
