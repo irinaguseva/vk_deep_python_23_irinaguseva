@@ -26,4 +26,4 @@ def generator(filename, words_to_seek):
                 yield line.strip()
             line = filename.readline()
     else:
-        raise TypeError("Ошибка. filename должен быть типа str или XXX")
+        raise TypeError("Ошибка. filename должен быть типа str или StringIO")

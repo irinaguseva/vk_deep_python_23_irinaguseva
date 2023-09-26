@@ -8,15 +8,15 @@ class TestGeneratorReadFilter(unittest.TestCase):
     def setUp(self):
         self.test_file = 'generator_robert_burns.txt'
         self.words_to_find = ["deer", "here", "roe"]
-        self.expected_result = ["My heart isn't here",
-                               "My heart's in the Highlands a-chasing the deer",
-                               "A-chasing the wild deer and following the roe"] 
-
+        self.expected_result = [
+            "My heart isn't here",
+            "My heart's in the Highlands a-chasing the deer",
+            "A-chasing the wild deer and following the roe"
+            ]
 
     def test_find_all_words_register_the_same(self):
         result = list(generator(self.test_file, self.words_to_find))
         self.assertEqual(result, self.expected_result)
-
 
     def test_find_all_words_register_random(self):
         words_we_want_to_find = ["dEeR",
@@ -24,7 +24,6 @@ class TestGeneratorReadFilter(unittest.TestCase):
                                  "ROE"]
         result = list(generator(self.test_file, words_we_want_to_find))
         self.assertEqual(result, self.expected_result)
-
 
     def test_give_list_of_nonexistent_words(self):
         words_not_to_be_found = ["abracadabra",
@@ -69,7 +68,6 @@ class TestGeneratorReadFilter(unittest.TestCase):
             list(generator(file_really_a_bool, self.words_to_find))
         with self.assertRaises(TypeError):
             list(generator(file_really_a_list, self.words_to_find))
-
 
     def test_io_file_type(self):
         io_file_to_test = io.StringIO()
