@@ -33,6 +33,25 @@ class TestGeneratorReadFilter(unittest.TestCase):
         result = list(generator(self.test_file, words_not_to_be_found))
         self.assertEqual(result, expected_result)
 
+    def test_corner_cases(self):
+        words_in_the_beginning = ["A-chasing"]
+        expected_result = ["My heart's in the Highlands a-chasing the deer",
+                           "A-chasing the wild deer and following the roe"]
+        result = list(generator(self.test_file, words_in_the_beginning))
+        self.assertEqual(result, expected_result)
+        words_in_the_end = ["roe",
+                            "go"]
+        expected_result = ["A-chasing the wild deer and following the roe",
+                           "My heart’s in the Highlands wherever I go"]
+        result = list(generator(self.test_file, words_in_the_end))
+        self.assertEqual(result, expected_result)
+        words_in_the_middle = ["wild",
+                               "isn't"]
+        expected_result = ["My heart isn't here",
+                           "A-chasing the wild deer and following the roe"]
+        result = list(generator(self.test_file, words_in_the_middle))
+        self.assertEqual(result, expected_result)
+
     def test_give_empty_list(self):
         empty_list = []
         expected_result = []
