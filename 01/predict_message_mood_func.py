@@ -13,11 +13,11 @@ def predict_message_mood(
     good_thresholds: float = 0.8,
 ) -> str:
 
+    if not isinstance(message, str):
+        raise TypeError('Ошибка. Функции на вход подано сообщение неверного типа')
     if not isinstance(model, SomeModel):
         raise TypeError('Ошибка. Функции на вход подана не модель SomeModel')
     pred = model.predict(message)
-    if not isinstance(pred, (int, float)):
-        raise TypeError("Ошибка. Pred должен быть числом")
     if not isinstance(bad_thresholds, (int, float)):
         raise TypeError("Ошибка. bad_thresholds должен быть числом")
     if not isinstance(good_thresholds, (int, float)):
