@@ -1,5 +1,6 @@
 import io
 
+
 def generator(filename, words_to_seek):
 
     if not isinstance(words_to_seek, list):
@@ -10,20 +11,17 @@ def generator(filename, words_to_seek):
 
     words_to_seek = {word.lower() for word in words_to_seek}
 
-    if isinstance(filename, str):
-        with open(filename, "r", encoding="utf-8") as current_file:
-            for line in current_file:
-                line_unique = {w.lower() for w in line.split()}
-                if line_unique.intersection(words_to_seek):
-                    yield line.strip()
-
-    elif isinstance(filename, io.StringIO):
-        filename.seek(0)
-        line = filename.readline()
-        while line:
+    def process_lines(lines):
+        for line in lines:
             line_unique = {w.lower() for w in line.split()}
             if line_unique.intersection(words_to_seek):
                 yield line.strip()
-            line = filename.readline()
+
+    if isinstance(filename, str):
+        with open(filename, "r", encoding="utf-8") as current_file:
+            yield from process_lines(current_file)
+    elif isinstance(filename, io.IOBase):
+        filename.seek(0)
+        yield from process_lines(filename)
     else:
-        raise TypeError("Ошибка. filename должен быть типа str или StringIO")
+        raise TypeError("Ошибка. filename должен быть типа str или io.IOBase")
