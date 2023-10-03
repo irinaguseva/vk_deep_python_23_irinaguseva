@@ -56,6 +56,31 @@ class TestPredictMessageMood(unittest.TestCase):
                                       model=self.model,
                                       bad_thresholds=5, good_thresholds=10)
         self.assertEqual(result, 'норм')
+        self.model.predict = MagicMock(return_value=4.5)
+        result = predict_message_mood(message="This is a bad message",
+                                      model=self.model,
+                                      bad_thresholds=4.6, good_thresholds=10)
+        self.assertEqual(result, 'неуд')
+        self.model.predict = MagicMock(return_value=10.5)
+        result = predict_message_mood(message="This is a good message",
+                                      model=self.model,
+                                      bad_thresholds=5, good_thresholds=10.4)
+        self.assertEqual(result, 'отл')
+
+    def test_predict_model_predict_called(self):
+        model = SomeModel()
+        model.predict = MagicMock(return_value=0.5)
+        message = "Hello"
+        predict_message_mood(message, model)
+        model.predict.assert_called_once_with(message)
+
+    def test_predict_model_predict_not_called(self):
+        model = SomeModel()
+        model.predict = MagicMock(return_value=0.5)
+        with self.assertRaises(TypeError):
+            message = 345
+            predict_message_mood(message, model)
+        model.predict.assert_not_called()
 
     def test_predict_message_mood_giving_message_of_wrong_type(self):
         with self.assertRaises(TypeError):
