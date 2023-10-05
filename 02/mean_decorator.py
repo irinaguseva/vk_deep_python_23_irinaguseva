@@ -10,7 +10,7 @@ def mean(k):
 
     def decorator(our_function):
         if not callable(our_function):
-            raise TypeError("func должен быть callable")
+            raise TypeError("our_function не callable")
         lst = []
 
         def wrapper(*args, **kwargs):
