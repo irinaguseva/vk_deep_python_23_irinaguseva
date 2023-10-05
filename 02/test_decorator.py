@@ -32,3 +32,7 @@ class MeanDecoratorTest(unittest.TestCase):
             @mean('invalid')
             def func():
                 time.sleep(1)
+
+
+if __name__ == "__main__":
+    unittest.main()

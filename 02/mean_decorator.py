@@ -8,22 +8,22 @@ def mean(k):
     if k < 0:
         raise ValueError("k должен быть больше 0")
 
-    def decorator(func):
-        times = []
+    def decorator(our_function):
+        if not callable(our_function):
+            raise TypeError("func должен быть callable")
+        lst = []
 
         def wrapper(*args, **kwargs):
             begin_time = time.time()
-            res = func(*args, **kwargs)
+            res = our_function(*args, **kwargs)
             end_time = time.time()
-            execution_time = end_time - begin_time
-            times.append(execution_time)
-            if len(times) > k:
-                times.pop(0)
-            av_time = sum(times) / len(times)
-            logging.info(round(execution_time, 1))
-            print(f"Среднее время последних {k} вызовов: {av_time} сек")
+            time_passed = end_time - begin_time
+            lst.append(time_passed)
+            if len(lst) > k:
+                lst.pop(0)
+            time_avrg = sum(lst) / len(lst)
+            logging.info(round(time_passed, 1))
+            print(f"Среднее время последних {k} вызовов: {time_avrg} секунд")
             return res
-
         return wrapper
-
     return decorator
