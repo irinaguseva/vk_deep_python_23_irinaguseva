@@ -41,11 +41,11 @@ class CustomList(UserList):
         elif not isinstance(other, list):
             raise TypeError("Вычитание невозможно")
         if not other:
-            return CustomList([-elem_x for elem_x in self.data])
-        result = []
-        for elem_x, elem_y in zip_longest(other, self.data, fillvalue=0):
-            result.append(elem_x - elem_y)
-        return CustomList(result)
+            return CustomList([x * (-1) for x in self.data])
+        lst_rsub = []
+        for (a, b) in zip_longest(other, self.data, fillvalue=0):
+            lst_rsub.append(a - b)
+        return CustomList(lst_rsub)
 
     def __lt__(self, other):
         if issubclass(type(other), CustomList):
