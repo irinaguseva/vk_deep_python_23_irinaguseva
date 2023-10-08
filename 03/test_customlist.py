@@ -38,6 +38,8 @@ class TestCustomList(TestCase):
         self.assertEqual(([] + self.lst1_integer).data, self.lst1_integer.data)
         self.assertEqual(([6, 7] + CustomList([8, 9])).data, [14, 16])
         self.assertEqual(([9] + CustomList([1])).data, [10])
+
+    def test_right_addition_with_floats(self):
         self.assertEqual(([2.2, 3.3, 4.4] + CustomList([1])).data, [3.2, 3.3, 4.4])
 
     def test_basic_addition(self):
@@ -55,27 +57,28 @@ class TestCustomList(TestCase):
         self.assertFalse(some_custom_list is (some_custom_list + []))
         self.assertFalse(some_custom_list is ([1, 2, 4] + some_custom_list))
         self.assertFalse(some_custom_list is (some_custom_list + [3, 4, 5]))
-
-    def test_subtract_lists(self):
+    
+    def test_subtract_ints(self):
+        ans_for_ints = [
+            (a - b)
+            for a, b in zip_longest(
+                self.lst1_integer.data,
+                self.lst2_integer.data,
+            )
+        ]
+        self.assertEqual((self.lst1_integer - self.lst2_integer).data, ans_for_ints)
+        
+    def test_subtract_floats(self):
         lst1_float = CustomList([random() for x in range(10)])
         lst2_float = CustomList([random() for x in range(10)])
-        expected_result = [
+        ans_for_floats = [
             (a - b)
             for a, b in zip_longest(
                 lst1_float.data,
                 lst2_float.data,
             )
         ]
-        self.assertEqual((lst1_float - lst2_float).data, expected_result)
-
-        expected_result = [
-            x_val - y_val
-            for x_val, y_val in zip_longest(
-                self.lst1_integer.data,
-                self.lst2_integer.data,
-            )
-        ]
-        self.assertEqual((self.lst1_integer - self.lst2_integer).data, expected_result)
+        self.assertEqual((lst1_float - lst2_float).data, ans_for_floats)
 
     def test_subtract_lists_of_dif_sizes(self):
         lst = CustomList([1, 2, 3])
