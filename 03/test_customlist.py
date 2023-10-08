@@ -7,11 +7,11 @@ from customlist import CustomList
 
 class TestCustomList(TestCase):
     def setUp(self):
-        self.lst1_integer = CustomList([randint(0, 10) for _ in range(10)])
-        self.lst2_integer = CustomList([randint(0, 10) for _ in range(10)])
+        self.lst1_integer = CustomList([randint(0, 10) for x in range(10)])
+        self.lst2_integer = CustomList([randint(0, 10) for y in range(10)])
 
     def test_adding_ints(self):
-        expected_result = [(a + b) for a, b in zip_longest(
+        ans_for_ints = [(a + b) for a, b in zip_longest(
                 self.lst1_integer.data,
                 self.lst2_integer.data,
             )
@@ -19,25 +19,26 @@ class TestCustomList(TestCase):
         self.assertEqual((self.lst1_integer + CustomList()).data, self.lst1_integer.data)
         self.assertEqual((CustomList([8]) + CustomList([1, 3])).data, [9, 3])
         self.assertEqual((self.lst1_integer + CustomList()).data, self.lst1_integer.data)
-        self.assertEqual((self.lst1_integer + self.lst2_integer).data, expected_result)
+        self.assertEqual((self.lst1_integer + self.lst2_integer).data, ans_for_ints)
 
     def test_adding_floats(self):
         lst1_float = CustomList([random() for x in range(10)])
         lst2_float = CustomList([random() for x in range(10)])
-        expected_result = [
-            x_val + y_val
-            for x_val, y_val in zip_longest(
+        ans_for_floats = [(a + b) for a, b in zip_longest(
                 lst1_float.data,
                 lst2_float.data,
             )
         ]
-        self.assertEqual((lst1_float + lst2_float).data, expected_result)
+        self.assertEqual((lst1_float + lst2_float).data, ans_for_floats)
+        self.assertEqual((CustomList([8.5]) + CustomList([1.0, 3.0])).data, [9.5, 3.0])
+        self.assertEqual((lst1_float + CustomList()).data, lst1_float.data)
+        self.assertEqual((lst1_float + lst2_float).data, ans_for_floats)
 
     def test_right_addition(self):
         self.assertEqual(([] + self.lst1_integer).data, self.lst1_integer.data)
-        self.assertEqual(([2, 5] + CustomList([1, 3])).data, [3, 8])
-        self.assertEqual(([2] + CustomList([1])).data, [3])
-        self.assertEqual(([2, 3, 7] + CustomList([1])).data, [3, 3, 7])
+        self.assertEqual(([6, 7] + CustomList([8, 9])).data, [14, 16])
+        self.assertEqual(([9] + CustomList([1])).data, [10])
+        self.assertEqual(([2.2, 3.3, 4.4] + CustomList([1])).data, [3.2, 3.3, 4.4])
 
     def test_basic_addition(self):
         with self.assertRaises(TypeError):
