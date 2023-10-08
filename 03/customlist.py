@@ -8,7 +8,6 @@ class CustomList(UserList):
             other = other.data
         elif not isinstance(other, list):
             raise TypeError("Сложение невозможно")
-
         if other is None:
             return CustomList(self.data.copy())
         lst_add = []
@@ -27,7 +26,6 @@ class CustomList(UserList):
             other = other.data
         elif not isinstance(other, list):
             raise TypeError("Вычитание невозможно")
-
         if other is None:
             return CustomList(self.data.copy())
         lst_sub = []
@@ -47,16 +45,6 @@ class CustomList(UserList):
             lst_rsub.append(a - b)
         return CustomList(lst_rsub)
 
-    def __lt__(self, other):
-        if issubclass(type(other), CustomList):
-            return sum(self.data) < sum(other.data)
-        raise TypeError("Операция сравнения не может быть выполнена")
-
-    def __le__(self, other):
-        if issubclass(type(other), CustomList):
-            return sum(self.data) <= sum(other.data)
-        raise TypeError("Операция сравнения не может быть выполнена")
-
     def __eq__(self, other):
         if issubclass(type(other), CustomList):
             return sum(self.data) == sum(other.data)
@@ -75,6 +63,16 @@ class CustomList(UserList):
     def __ge__(self, other):
         if issubclass(type(other), CustomList):
             return sum(self.data) >= sum(other.data)
+        raise TypeError("Операция сравнения не может быть выполнена")
+
+    def __lt__(self, other):
+        if issubclass(type(other), CustomList):
+            return sum(self.data) < sum(other.data)
+        raise TypeError("Операция сравнения не может быть выполнена")
+
+    def __le__(self, other):
+        if issubclass(type(other), CustomList):
+            return sum(self.data) <= sum(other.data)
         raise TypeError("Операция сравнения не может быть выполнена")
 
     def __str__(self):
