@@ -1,37 +1,55 @@
-from itertools import zip_longest
-
 class CustomList(list):
     def __add__(self, other):
-
-        lst_add = []
-        for (a, b) in zip_longest(self, other, fillvalue=0):
-            lst_add.append(a + b)
-
+        if not isinstance(other, list):
+            raise TypeError()
+        rng = min(len(self), len(other))
+        lst_add = [self[i] + other[i] for i in range(rng)]
+        if len(self) > len(other):
+            for j in range(len(other), len(self)):
+                lst_add.append(self[j])
+        else:
+            for k in range(len(self), len(other)):
+                lst_add.append(other[k])
         return CustomList(lst_add)
 
     def __sub__(self, other):
-
-        lst_sub = []
-        for (a, b) in zip_longest(self, other, fillvalue=0):
-            lst_sub.append(a - b)
-
-        return CustomList(lst_sub)
+        if not isinstance(other, list):
+            raise TypeError()
+        rng = min(len(self), len(other))
+        lst_add = [self[i] - other[i] for i in range(rng)]
+        if len(self) > len(other):
+            for j in range(len(other), len(self)):
+                lst_add.append(self[j])
+        else:
+            for k in range(len(self), len(other)):
+                lst_add.append(-other[k])
+        return CustomList(lst_add)
 
     def __radd__(self, other):
-
-        lst_radd = []
-        for (a, b) in zip_longest(self, other, fillvalue=0):
-            lst_radd.append(a + b)
-
+        if not isinstance(other, list):
+            raise TypeError()
+        rng = min(len(self), len(other))
+        lst_radd = [self[i] + other[i] for i in range(rng)]
+        if len(self) > len(other):
+            for j in range(len(other), len(self)):
+                lst_radd.append(self[j])
+        else:
+            for k in range(len(self), len(other)):
+                lst_radd.append(other[k])
         return CustomList(lst_radd)
 
     def __rsub__(self, other):
-
-        lst_rsub = []
-        for (a, b) in zip_longest(self, other, fillvalue=0):
-            lst_rsub.append(b - a)
-
-        return CustomList(lst_rsub)
+        if not isinstance(other, list):
+            raise TypeError()
+        rng = min(len(self), len(other))
+        lst_add = [other[i] - self[i] for i in range(rng)]
+        if len(self) > len(other):
+            for j in range(len(other), len(self)):
+                lst_add.append(-self[j])
+        else:
+            for k in range(len(self), len(other)):
+                lst_add.append(other[k])
+        return CustomList(lst_add)
 
     def __eq__(self, other):
         return sum(self) == sum(other)
