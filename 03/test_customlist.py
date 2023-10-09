@@ -146,17 +146,17 @@ class TestCustomList(TestCase):
         with self.assertRaises(TypeError):
             lst_plus_int = self.lst1_integer + 1
         with self.assertRaises(TypeError):
-            int_plus_lst = 1 + self.lst1_integer
+            lst_plus_lst = {} + self.lst1_integer
         with self.assertRaises(TypeError):
             lst_plus_str = self.lst1_integer + "string"
         with self.assertRaises(TypeError):
             str_plus_lst = "string" + self.lst1_integer 
 
-    def test_basic_subtraction(self):
+    def test_adding_wrong_types_with_floats(self):
         with self.assertRaises(TypeError):
             lst_minus_int = self.lst1_integer - 1
         with self.assertRaises(TypeError):
-            int_minus_lst = 1 - self.lst1_integer
+            dic_minus_lst = {} - self.lst1_integer
         with self.assertRaises(TypeError):
             lst_minus_str = self.lst1_integer - "string"
         with self.assertRaises(TypeError):
@@ -176,7 +176,6 @@ class TestCustomList(TestCase):
             more_right= cust_list_for_wrong_ops > 5
         with self.assertRaises(TypeError):
             less_left = cust_list_for_wrong_ops < 6
-
 
     def test_str_non_empty(self):
         self.assertEqual(
