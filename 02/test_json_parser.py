@@ -1,5 +1,6 @@
 import unittest
 from unittest.mock import MagicMock
+from collections import defaultdict
 from json_parser import parse_json
 
 
@@ -17,6 +18,49 @@ class TestJsonParser(unittest.TestCase):
                    keyword_callback=self.keyword_callback)
         self.keyword_callback.assert_called_with("minecraft_friendly_mobs",
                                                  "Ocelot")
+        
+    def test_some_fields_keywords(self):
+        parse_json(self.json_file, 
+                   ["minecraft_friendly_mobs", "minecraft_neutral_mobs"],
+                   ["Rabbit", "Ocelot", "Wolf"], 
+                   self.keyword_callback)
+        calls = [
+            unittest.mock.call("minecraft_friendly_mobs", "Rabbit"),
+            unittest.mock.call("minecraft_friendly_mobs", "Ocelot"),
+            unittest.mock.call("minecraft_neutral_mobs", "Wolf"),
+        ]
+        self.assertEqual(calls, self.keyword_callback.mock_calls)
+
+    def test_nonexistent_keyword(self):
+        parse_json(self.json_file, 
+                   ["minecraft_friendly_mobs"],
+                   ["Slenderman"], 
+                   self.keyword_callback)
+        self.keyword_callback.assert_not_called()
+
+    def test_some_keywords_in_one_line(self):
+        parse_json(self.json_file, 
+                   ["minecraft_hostile_mobs"],
+                   ["Spider", "Pillager", "Zombie"], 
+                   self.keyword_callback)
+        calls = [
+            unittest.mock.call("minecraft_hostile_mobs", "Spider"),
+            unittest.mock.call("minecraft_hostile_mobs", "Pillager"),
+            unittest.mock.call("minecraft_hostile_mobs", "Zombie"),
+        ]
+        self.assertEqual(calls, self.keyword_callback.mock_calls)
+
+    def test_case_insensitive_keywords(self):
+        parse_json(self.json_file, 
+                   ["minecraft_hostile_mobs"],
+                   ["zOmbIe", "SPIDER", "piLLAGer"], 
+                   self.keyword_callback)
+        calls = [
+            unittest.mock.call("minecraft_hostile_mobs", "Zombie"),
+            unittest.mock.call("minecraft_hostile_mobs", "Spider"),
+            unittest.mock.call("minecraft_hostile_mobs", "Pillager"),
+        ]
+        self.assertEqual(calls, self.keyword_callback.mock_calls)
 
     def test_json_parser_incorrect_register_of_field(self):
         parse_json(json_str=self.json_file,
@@ -75,19 +119,27 @@ class TestJsonParser(unittest.TestCase):
                        required_fields=[],
                        keywords=["error"],
                        keyword_callback=self.keyword_callback)
+            
+    def test_required_fields_none(self):
+        parse_json(json_str=self.json_file,
+                       required_fields=None,
+                       keywords=["smth"],
+                       keyword_callback=self.keyword_callback)
+        self.keyword_callback.assert_not_called()   
 
-    def test_pass_smth_instead_of_callback(self):
-        with self.assertRaises(TypeError):
-            parse_json(json_str=self.json_file,
+    def test_keywords_none(self):
+        parse_json(json_str=self.json_file,
+                       required_fields=["smth"],
+                       keywords=None,
+                       keyword_callback=self.keyword_callback)
+        self.keyword_callback.assert_not_called() 
+
+    def test_callback_none(self):
+        parse_json(json_str=self.json_file,
                        required_fields=["smth"],
                        keywords=["smth"],
-                       keyword_callback={})
-        with self.assertRaises(TypeError):
-            parse_json(json_str=self.json_file,
-                       required_fields=["smth"],
-                       keywords=["smth"],
-                       keyword_callback=[])
-
+                       keyword_callback=None)
+        self.keyword_callback.assert_not_called() 
 
 if __name__ == "__main__":
     unittest.main()

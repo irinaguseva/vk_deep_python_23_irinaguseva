@@ -8,8 +8,8 @@ def parse_json(json_str: str,
                keywords: Optional[list[str]],
                keyword_callback) -> None:
 
-    if not keyword_callback:
-        raise TypeError("keyword_callback не должна быть None")
+    if required_fields is None or keywords is None or keyword_callback is None:
+        return None
     try:
         json_doc = json.loads(json_str)
     except json.JSONDecodeError as err:
