@@ -10,73 +10,100 @@ class TestCustomList(TestCase):
         self.lst2_integer = CustomList([7, 7, 7, 7, 7, 7, 7, 7, 7, 7])
 
     def test_adding_ints(self):
-
-        self.assertEqual((self.lst1_integer + CustomList()), self.lst1_integer)
-        self.assertEqual((CustomList([8]) + CustomList([1, 3])), [9, 3])
-        self.assertEqual((self.lst1_integer + CustomList()), self.lst1_integer)
+        self.assertTrue(all(elem1 == elem2 for elem1, elem2 in 
+                            zip(self.lst1_integer + CustomList(), self.lst1_integer)))
+        self.assertTrue(all(elem1 == elem2 for elem1, elem2 in 
+                            zip(CustomList([8]) + CustomList([1, 3]), [9, 3])))
+        self.assertTrue(all(elem1 == elem2 for elem1, elem2 in 
+                            zip(self.lst1_integer + CustomList(), self.lst1_integer)))
 
     def test_adding_floats(self):
         lst1_add_float = CustomList([0.5, 0.6, 0.7])
         lst2_add_float = CustomList([0.5, 0.4, 0.3])
-        self.assertEqual((lst1_add_float + lst2_add_float), [1.0, 1.0, 1.0])
-        self.assertEqual((CustomList([8.5]) + CustomList([1.0, 3.0])), [9.5, 3.0])
-        self.assertEqual((lst1_add_float + CustomList()), lst1_add_float)
+        self.assertTrue(all(elem1 == elem2 for elem1, elem2 in 
+                            zip(CustomList([8.5]) + CustomList([1.0, 3.0]), [9.5, 3.0])))
+        self.assertTrue(all(elem1 == elem2 for elem1, elem2 in 
+                            zip(lst1_add_float + CustomList(), lst1_add_float)))
+        self.assertTrue(all(elem1 == elem2 for elem1, elem2 in 
+                            zip(lst1_add_float + lst2_add_float, [1.0, 1.0, 1.0])))
 
     def test_right_addition(self):
-        self.assertEqual(([] + self.lst1_integer), self.lst1_integer)
-        self.assertEqual(([6, 7] + CustomList([8, 9])), [14, 16])
-        self.assertEqual(([9] + CustomList([1])), [10])
+        self.assertTrue(all(elem1 == elem2 for elem1, elem2 in 
+                            zip([] + self.lst1_integer, self.lst1_integer)))
+        self.assertTrue(all(elem1 == elem2 for elem1, elem2 in 
+                            zip([6, 7] + CustomList([8, 9]), [14, 16])))
+        self.assertTrue(all(elem1 == elem2 for elem1, elem2 in 
+                            zip([9] + CustomList([1]), [10])))
 
     def test_right_addition_with_floats(self):
-        self.assertEqual(([2.2, 3.3, 4.4] + CustomList([1])), [3.2, 3.3, 4.4])
+        self.assertTrue(all(elem1 == elem2 for elem1, elem2 in 
+                            zip([2.2, 3.3, 4.4] + CustomList([1]), [3.2, 3.3, 4.4])))
 
     def test_add_empty(self):
         empty_list = CustomList()
-        self.assertFalse(empty_list is (empty_list + self.lst1_integer))
-        self.assertFalse(empty_list is (self.lst1_integer + empty_list))
-        self.assertFalse(empty_list is ([] + empty_list))
-        self.assertFalse(empty_list is (empty_list + []))
-        self.assertFalse(empty_list is ([1, 2, 4] + empty_list))
-        self.assertFalse(empty_list is (empty_list  + [3, 4, 5]))
+        self.assertTrue(all(elem1 == elem2 for elem1, elem2 in 
+                            zip(empty_list + self.lst1_integer, self.lst1_integer)))
+        self.assertTrue(all(elem1 == elem2 for elem1, elem2 in 
+                            zip(self.lst1_integer + empty_list, self.lst1_integer)))
+        self.assertTrue(all(elem1 == elem2 for elem1, elem2 in 
+                            zip(empty_list + [], [])))
+        self.assertTrue(all(elem1 == elem2 for elem1, elem2 in 
+                            zip([] + empty_list, [])))
+        self.assertTrue(all(elem1 == elem2 for elem1, elem2 in 
+                            zip([1, 2, 4] + empty_list, [1, 2, 4])))
+        self.assertTrue(all(elem1 == elem2 for elem1, elem2 in 
+                            zip(empty_list + [3, 4, 5], [3, 4, 5])))
         
     def test_subtract_ints(self):
-        self.assertEqual((self.lst1_integer - self.lst2_integer), 
-                         [-6, -5, -4, -3, -2, -1, 0, 1, 2, 3])
+        self.assertTrue(all(elem1 == elem2 for elem1, elem2 in 
+                            zip(self.lst1_integer - self.lst2_integer, 
+                                [-6, -5, -4, -3, -2, -1, 0, 1, 2, 3])))
         
     def test_subtract_floats(self):
         lst1_float = CustomList([0.5, 0.6, 0.7])
         lst2_float = CustomList([0.5, 0.4, 0.3])
         ans_for_floats = [(a - b) for a, b in zip(lst1_float,lst2_float)]
-        self.assertEqual((lst1_float - lst2_float), ans_for_floats)
+        self.assertTrue(all(elem1 == elem2 for elem1, elem2 in 
+                            zip(lst1_float - lst2_float, ans_for_floats)))
 
     def test_subtract_lists_of_dif_sizes(self):
         lst = CustomList([1, 2, 3])
-        self.assertEqual((lst - CustomList([2])), [-1, 2, 3])
-        self.assertEqual(
-            (lst - CustomList([2, 5, 4, 7])), [-1, -3, -1, -7]
-        )
-        self.assertEqual((lst - [2]), [-1, 2, 3])
-        self.assertEqual((lst - [2, 5, 4, 7]), [-1, -3, -1, -7])
+        self.assertTrue(all(elem1 == elem2 for elem1, elem2 in 
+                            zip(lst - CustomList([2]), [-1, 2, 3])))
+        self.assertTrue(all(elem1 == elem2 for elem1, elem2 in 
+                            zip(lst - CustomList([2, 5, 4, 7]), [-1, -3, -1, -7])))
+        self.assertTrue(all(elem1 == elem2 for elem1, elem2 in 
+                            zip(lst - [2], [-1, 2, 3])))
+        self.assertTrue(all(elem1 == elem2 for elem1, elem2 in 
+                            zip(lst - [2, 5, 4, 7], [-1, -3, -1, -7])))
 
     def test_subtract_empty_lists(self):
-        self.assertEqual((self.lst1_integer - []), self.lst1_integer)
-        self.assertEqual((self.lst1_integer - CustomList()), self.lst1_integer)
+        self.assertTrue(all(elem1 == elem2 for elem1, elem2 in 
+                            zip(self.lst1_integer - [], self.lst1_integer)))
+        self.assertTrue(all(elem1 == elem2 for elem1, elem2 in 
+                            zip(self.lst1_integer - CustomList(), self.lst1_integer)))
 
     def test_right_subtraction_same_size(self):
         lst = list(range(10))
-        self.assertEqual((lst - self.lst2_integer), 
-                         [-7, -6, -5, -4, -3, -2, -1, 0, 1, 2])
+        self.assertTrue(all(elem1 == elem2 for elem1, elem2 in 
+                            zip(lst - self.lst2_integer, 
+                                [-7, -6, -5, -4, -3, -2, -1, 0, 1, 2])))
 
     def test_right_subtract_lists_of_dif_size(self):
         lst_for_testing_dif_sizes = CustomList([1, 2, 3])
-        self.assertEqual(([1] - lst_for_testing_dif_sizes), [0, -2, -3])
-        self.assertEqual(([3, 2] - lst_for_testing_dif_sizes), [2, 0, -3])
-        self.assertEqual(([5, 3, 2, 7] - lst_for_testing_dif_sizes), [4, 1, -1, 7])
+        self.assertTrue(all(elem1 == elem2 for elem1, elem2 in 
+                            zip([1] - lst_for_testing_dif_sizes, [0, -2, -3])))
+        self.assertTrue(all(elem1 == elem2 for elem1, elem2 in 
+                            zip([3, 2] - lst_for_testing_dif_sizes, [2, 0, -3])))
+        self.assertTrue(all(elem1 == elem2 for elem1, elem2 in 
+                            zip([5, 3, 2, 7] - lst_for_testing_dif_sizes, [4, 1, -1, 7])))
 
     def test_right_subtraction_empty_list(self):
         expected_result = [item * (-1) for item in self.lst2_integer]
-        self.assertEqual(([] - self.lst2_integer), expected_result)
-        self.assertEqual((CustomList() - self.lst2_integer), expected_result)
+        self.assertTrue(all(elem1 == elem2 for elem1, elem2 in 
+                            zip([] - self.lst2_integer, expected_result)))
+        self.assertTrue(all(elem1 == elem2 for elem1, elem2 in 
+                            zip(CustomList() - self.lst2_integer, expected_result)))
 
     def test_new_object_created_add(self):
         lst_to_check_new_obj = CustomList()
@@ -100,13 +127,17 @@ class TestCustomList(TestCase):
         lst_1 = CustomList([1, 2, 3, 4, 5])
         lst_1_save_data = [x for x in lst_1]
         adding = CustomList([1, 2]) + lst_1
-        assert lst_1 == lst_1_save_data
+        self.assertTrue(all(elem1 == elem2 for elem1, elem2 in 
+                            zip(lst_1, lst_1_save_data)))
         r_adding = lst_1 + CustomList([])
-        assert lst_1 == lst_1_save_data
+        self.assertTrue(all(elem1 == elem2 for elem1, elem2 in 
+                            zip(lst_1, lst_1_save_data)))
         subtr = CustomList([1, 2]) - lst_1
-        assert lst_1 == lst_1_save_data
+        self.assertTrue(all(elem1 == elem2 for elem1, elem2 in 
+                            zip(lst_1, lst_1_save_data)))
         r_subtr = lst_1 - CustomList([])
-        assert lst_1 == lst_1_save_data
+        self.assertTrue(all(elem1 == elem2 for elem1, elem2 in 
+                            zip(lst_1, lst_1_save_data)))
 
     def test_equal(self):
         lst1_for_eq = CustomList([5]) 
