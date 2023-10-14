@@ -16,7 +16,6 @@ class BookName:
             raise TypeError("BookName should be a string.")
         if (not all(ord(c) < 128 for c in val)) or len(val) > 99:
             raise ValueError("Wrong symbols in BookName or it's too long.")
-        
         obj.__dict__[self.name] = val
 
 
