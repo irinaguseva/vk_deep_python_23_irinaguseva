@@ -31,7 +31,14 @@ class TestBookName(unittest.TestCase):
         with self.assertRaises(ValueError):
             hobbit = BritishBooks("Hobbit¶", "J. R. R. Tolkien", 10.50)
         with self.assertRaises(ValueError):
-            tess = BritishBooks("Tess of the d'Urbervilles"*10, "Thomas Hardy", 10.50)
+            tess = BritishBooks("Tess of the d'Urbervilles", "Thomas Hardy"*10, 10.50)
+
+        with self.assertRaises(ValueError):
+            gulliver = BritishBooks("Gulliver's Travels", "Jonathan Swift", 1000001)
+
+    def test_str(self):
+        dracula = BritishBooks("Dracula", "Bram Stocker", 77)
+        assert(str(dracula) == 'The novel Dracula by Bram Stocker costs 77 $'), str(dracula)
 
 if __name__ == '__main__':
     unittest.main()
