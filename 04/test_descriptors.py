@@ -2,7 +2,7 @@ import unittest
 
 from descriptors_books import BritishBooks
 
-class TestBookName(unittest.TestCase):
+class TestBritishBook(unittest.TestCase):
 
     def test_instance(self):
         new_book = BritishBooks("Book", "Unknown", 404)
