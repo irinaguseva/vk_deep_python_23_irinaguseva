@@ -48,6 +48,24 @@ class TestBookName(unittest.TestCase):
         ivanhoe.price = 15
         self.assertTrue(ivanhoe.price == 15)
 
+    def test_reassignment_of_invalid_values(self):
+        montezumas_daughter = BritishBooks("Montezuma's Daughter", "H. Rider Haggard", 33)
+        self.assertTrue(montezumas_daughter.name == "Montezuma's Daughter")
+        self.assertTrue(montezumas_daughter.author == "H. Rider Haggard")
+        self.assertTrue(montezumas_daughter.price == 33)
+        with self.assertRaises(ValueError):
+            montezumas_daughter.name = "Montezumª's Dªughter"
+        self.assertTrue(montezumas_daughter.name == "Montezuma's Daughter")
+        self.assertTrue(montezumas_daughter.__dict__["name"] == "Montezuma's Daughter")
+        with self.assertRaises(ValueError):
+            montezumas_daughter.author = "ℌ. ℜ𝔦𝔡𝔢𝔯 ℌ𝔞𝔤𝔤𝔞𝔯𝔡"
+        self.assertTrue(montezumas_daughter.author == "H. Rider Haggard")
+        self.assertTrue(montezumas_daughter.__dict__["author"] == "H. Rider Haggard")
+        with self.assertRaises(ValueError):
+            montezumas_daughter.price = -1
+        self.assertTrue(montezumas_daughter.price == 33)
+        self.assertTrue(montezumas_daughter.__dict__["price"] == 33)    
+
     def test_dict_correct(self):
         animal_farm = BritishBooks("Animal Farm", "George Orwell", 16)
         self.assertTrue(animal_farm.__dict__["name"] == "Animal Farm")
@@ -56,8 +74,8 @@ class TestBookName(unittest.TestCase):
 
     def test_str_correct(self):
         dracula = BritishBooks("Dracula", "Bram Stocker", 77)
-        assert(str(dracula) == 'The novel Dracula by Bram Stocker costs 77 $'), str(dracula)
-    
+        self.assertTrue(str(dracula) == 'The novel Dracula by Bram Stocker costs 77 $')
+   
 
 if __name__ == '__main__':
     unittest.main()
