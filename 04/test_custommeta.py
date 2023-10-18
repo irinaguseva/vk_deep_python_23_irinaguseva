@@ -42,6 +42,28 @@ class CustomMetaTests(unittest.TestCase):
         self.assertEqual(test_obj.custom_waiting_for_a_prefix, 1)
         self.assertTrue("custom_waiting_for_a_prefix" in TestClass.__dict__)
 
+    def test_setattr(self):
+        class TestClass(metaclass=CustomMeta):
+            prefix = 1
+            __magic__ = 2
+        test_obj = TestClass()
+        with self.assertRaises(AttributeError):
+            test_obj.prefix
+        with self.assertRaises(AttributeError):
+            test_obj.custom___magic__
+        self.assertEqual(test_obj.custom_prefix, 1)
+        self.assertTrue("custom_prefix" in TestClass.__dict__)
+        self.assertEqual(test_obj.__magic__, 2)
+        self.assertTrue("__magic__" in TestClass.__dict__)
+
+    def test_obj_dict(self):
+        class MyClass(metaclass=CustomMeta):
+            pass
+        obj = MyClass()
+        obj.__attr__ = 1
+        obj.attr = 2
+        self.assertEqual(obj.__dict__, {'__attr__': 1, 'custom_attr': 2})
+
     def test_passing_magic(self):
         class TestClass(metaclass=CustomMeta):
             __magic__ = 1
