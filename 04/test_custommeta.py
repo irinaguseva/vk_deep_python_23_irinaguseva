@@ -57,12 +57,12 @@ class CustomMetaTests(unittest.TestCase):
         self.assertTrue("__magic__" in TestClass.__dict__)
 
     def test_obj_dict(self):
-        class MyClass(metaclass=CustomMeta):
+        class TestClass(metaclass=CustomMeta):
             pass
-        obj = MyClass()
-        obj.__attr__ = 1
-        obj.attr = 2
-        self.assertEqual(obj.__dict__, {'__attr__': 1, 'custom_attr': 2})
+        test_obj = TestClass()
+        test_obj.__attr__ = 1
+        test_obj.attr = 2
+        self.assertEqual(test_obj.__dict__, {'__attr__': 1, 'custom_attr': 2})
 
     def test_passing_magic(self):
         class TestClass(metaclass=CustomMeta):
