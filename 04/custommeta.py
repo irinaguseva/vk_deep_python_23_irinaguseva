@@ -8,13 +8,9 @@ class CustomMeta(type):
              for key in
              init_dic.keys()
          }
-
-        new_dict["__setattr__"] = lambda ex, attr, val: ex.__dict__.update({("custom_" + attr): val})
+        
+        new_dict["__setattr__"] = lambda ex, attr, val: ex.__dict__.update({("custom_" + attr) if not attr.startswith("__") and not attr.endswith("__") else attr: val})
         return super().__new__(mcs, name, bases, new_dict)
-
-    def __call__(cls, *args, **kwargs):
-        instance = super().__call__(*args, **kwargs)
-        return instance
 
 
 class CustomClass(metaclass=CustomMeta):
