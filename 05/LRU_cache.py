@@ -1,10 +1,10 @@
 class LRUCache:
 
     def __init__(self, capacity: int):
+        if not isinstance(capacity, int):
+            raise TypeError("Capacity must be an integer")
         if capacity <= 0:
             raise ValueError("Capacity must be greater than zero")
-        if not isinstance(capacity, int):
-            raise TypeError('Capacity must be an integer')
         self.cache = {}
         self.capacity = capacity   
 
