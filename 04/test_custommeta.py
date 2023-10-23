@@ -82,11 +82,11 @@ class CustomMetaTests(unittest.TestCase):
 
     def test_with_class_inherited(self):
         class TestClass(metaclass=CustomMeta):
-            x = 1
+            x = 3
         class ClassForInheritance(TestClass):
             pass
         test_obj = ClassForInheritance()
-        self.assertEqual(test_obj.custom_x, 1)
+        self.assertEqual(test_obj.custom_x, 3)
 
 
 if __name__ == "__main__":
