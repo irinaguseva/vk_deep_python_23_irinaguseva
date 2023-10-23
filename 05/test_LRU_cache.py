@@ -1,6 +1,6 @@
 import unittest
 
-from lru_g5 import LRUCache
+from LRU_cache import LRUCache
 
 class LRUCacheTest(unittest.TestCase):
 
