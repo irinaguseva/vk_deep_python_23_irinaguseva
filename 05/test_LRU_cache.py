@@ -70,7 +70,13 @@ class LRUCacheTest(unittest.TestCase):
         result = cache.get("k1")
         self.assertEqual(result, "new_val1")
 
-    def test_set_invalid_capacity(self):
+    def test_set_invalid_capacity_type(self):
+        with self.assertRaises(TypeError):
+            cache = LRUCache('capacity')  
+        with self.assertRaises(TypeError):
+            cache = LRUCache([])  
+
+    def test_set_invalid_capacity_value(self):
         with self.assertRaises(ValueError):
             cache = LRUCache(0)  
         with self.assertRaises(ValueError):
