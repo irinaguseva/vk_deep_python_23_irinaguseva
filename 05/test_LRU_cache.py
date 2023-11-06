@@ -2,12 +2,13 @@ import unittest
 
 from LRU_cache import LRUCache
 
+
 class LRUCacheTest(unittest.TestCase):
 
     def test_the_cases_given(self):
         cache = LRUCache(2)
         cache.set("k1", "val1")
-        cache.set("k2", "val2") 
+        cache.set("k2", "val2")
         assert cache.get("k3") is None
         assert cache.get("k2") == "val2"
         assert cache.get("k1") == "val1"
@@ -72,31 +73,54 @@ class LRUCacheTest(unittest.TestCase):
 
     def test_set_invalid_capacity_type(self):
         with self.assertRaises(TypeError):
-            cache = LRUCache('capacity')  
+            _ = LRUCache('capacity')
         with self.assertRaises(TypeError):
-            cache = LRUCache([])  
+            _ = LRUCache([])
 
     def test_set_invalid_capacity_value(self):
         with self.assertRaises(ValueError):
-            cache = LRUCache(0)  
+            _ = LRUCache(0)
         with self.assertRaises(ValueError):
-            cache = LRUCache(-1)  
+            _ = LRUCache(-1)
 
     def test_set_invalid_key(self):
         cache = LRUCache(2)
         with self.assertRaises(TypeError):
-            cache.set(None, "key_invalid")  
+            cache.set(None, "key_invalid")
 
     def test_set_invalid_value(self):
         cache = LRUCache(2)
         with self.assertRaises(TypeError):
-            cache.set("k1", None)  
+            cache.set("k1", None)
 
     def test_getitem_invalid_key(self):
         cache = LRUCache(2)
         cache.set("k1", "val1")
         with self.assertRaises(TypeError):
-            result = cache[None]  
+            _ = cache[None]
+
+    def test_capacity_1(self):
+        cache = LRUCache(1)
+        cache.set("k1", "val1")
+        cache.set("k2", "val2")
+        result = cache.get("k1")
+        self.assertIsNone(result)
+        cache["k2"] = "val2_new"
+        self.assertEqual(cache["k2"], "val2_new")
+
+    def test_change_value_check_pop(self):
+        # change
+        cache = LRUCache(2)
+        cache.set("k1", "val1")
+        cache.set("k2", "val2")
+        self.assertEqual(cache.get("k1"), "val1")
+        self.assertEqual(cache.get("k2"), "val2")
+        cache.set("k1", "val1_new")
+        self.assertEqual(cache.get("k1"), "val1_new")
+        # pop
+        cache.set("k3", "val3")
+        self.assertEqual(cache.get("k3"), "val3")
+        self.assertIsNone(cache.get("k2"))
 
 
 if __name__ == '__main__':
