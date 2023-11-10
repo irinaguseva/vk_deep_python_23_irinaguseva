@@ -1,17 +1,22 @@
 import aiohttp
 import argparse
 import asyncio
+import nltk
+import re
+from nltk.corpus import stopwords
 from bs4 import BeautifulSoup
 from collections import Counter
 
+
+nltk.download('stopwords')
+stop_words_en = set(stopwords.words('english'))
+stop_words_ru = set(stopwords.words('russian'))
 
 def open_urls_file(file_urls):
     with open(file_urls, "r") as f:
         urls_file = f.readlines()
     return [item.strip() for item in urls_file]
 
-def html_page_preprocess():
-    pass
 
 async def fetch_url(session, url, semaphore=None):
     if semaphore:
@@ -24,6 +29,8 @@ async def fetch_url(session, url, semaphore=None):
 
 
 async def get_response(urls, concurrent_requests):
+    global stop_words
+
     async with aiohttp.ClientSession() as session:
         tasks = []
         sema = asyncio.Semaphore(concurrent_requests)
@@ -39,7 +46,9 @@ async def get_response(urls, concurrent_requests):
             page_txt = page.text 
             with open("txt_page.txt", "w", errors='ignore') as f:
                 f.write(page_txt)
-            freq_words = Counter(page_txt.lower().split())
+            tokens_obtained = re.findall(r'\b\w+\b', page_txt.lower())
+            tokens_obtained = [token for token in tokens_obtained if token not in stop_words_en and token not in stop_words_ru]
+            freq_words = Counter(tokens_obtained)
             result = {}
             for word, count in freq_words.most_common(5):
                 result[word] = count
