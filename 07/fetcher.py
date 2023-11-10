@@ -60,17 +60,8 @@ if __name__ == "__main__":
     parser.add_argument("-c", "--conc_reqs", type=int, help="Количество асинхронных вызовов")
     parser.add_argument("urls", type=str, help="Файл с url-ами")
     args = parser.parse_args()
-
     num_reqs = args.conc_reqs
-
-    if not isinstance(num_reqs, int):
-        raise TypeError("Переменная num_reqs должна быть типа int!")
-    
     file_urls = args.urls
-
-    if not isinstance(file_urls, str):
-        raise TypeError("Переменная urls должна быть типа str!")
-
     urls_lst = open_urls_file(file_urls)
     event_loop = asyncio.get_event_loop()
     event_loop.run_until_complete(get_response(urls_lst, num_reqs))
