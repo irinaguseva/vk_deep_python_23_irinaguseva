@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 from collections import Counter
 
 
-nltk.download('stopwords')
+nltk.download('stopwords', quiet=True)
 stop_words_en = set(stopwords.words('english'))
 stop_words_ru = set(stopwords.words('russian'))
 
@@ -44,8 +44,6 @@ async def get_response(urls, concurrent_requests):
         for u, r in zip(urls, responses):
             page = BeautifulSoup(r, 'html.parser')
             page_txt = page.text 
-            with open("txt_page.txt", "w", errors='ignore') as f:
-                f.write(page_txt)
             tokens_obtained = re.findall(r'\b\w+\b', page_txt.lower())
             tokens_obtained = [token for token in tokens_obtained if token not in stop_words_en and token not in stop_words_ru]
             freq_words = Counter(tokens_obtained)
