@@ -1,8 +1,5 @@
-
-import time
 import weakref
-import cProfile
-import pstats
+import time
 from memory_profiler import profile
 
 n = 50000
