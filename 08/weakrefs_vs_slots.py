@@ -31,7 +31,7 @@ simple_finish_time = time.time()
 print(f"Время изменения атрибутов {n} экземпляров для классов с обычными атрибутами составляет {simple_finish_time - simple_start_time}.")
 
 @profile
-def memory_profiling_simple_class():
+def simple_memory():
     simple_books_lst = []
     for i in range(n):
         simple_book = MyBookSimple(BookVal(100001), BookVal(8), BookVal(1500))
@@ -40,7 +40,7 @@ def memory_profiling_simple_class():
         simple_books_lst[i].idnumber.val = BookVal(1)
         simple_books_lst[i].rating.val = BookVal(1)
         simple_books_lst[i].price.val = BookVal(1)
-memory_profiling_simple_class()
+simple_memory()
 
 class MyBookSlots:
     __slots__ = ['idnumber', 'rating', 'price']
@@ -67,7 +67,7 @@ slot_finish_time_change = time.time()
 print(f"Время изменения атрибутов {n} экземпляров для классов со слотами составляет {slot_finish_time_change - slot_start_time_change}.")
 
 @profile
-def memory_profiling_slot_class():
+def slot_memory():
     slot_books_lst = []
     for i in range(n):
         slot_book = MyBookSlots(BookVal(100002), BookVal(9), BookVal(3000))
@@ -76,7 +76,7 @@ def memory_profiling_slot_class():
         slot_books_lst[i].idnumber.val  = BookVal(0)
         slot_books_lst[i].rating.val = BookVal(0)
         slot_books_lst[i].price.val = BookVal(0)
-memory_profiling_slot_class()
+slot_memory()
 
 class MyBookWeakref:
     def __init__(self, idnumber, rating, price):
@@ -116,7 +116,7 @@ weakref_finish_time_change = time.time()
 print(f"Время изменения атрибутов {n} экземпляров для классов с weakref атрибутами составляет {weakref_finish_time_change - weakref_start_time_change}.")
 
 @profile
-def memory_profiling_weakref_class():
+def weakref_memory():
     weakref_books_lst = []
     idnumber, rating, price = BookVal(100003), BookVal(10), BookVal(5000)
     for i in range(n):
@@ -127,4 +127,4 @@ def memory_profiling_weakref_class():
         weakref_books_lst[i].rating.val += 1
         weakref_books_lst[i].price.val += 1
         
-memory_profiling_weakref_class()
+weakref_memory()
